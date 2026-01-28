@@ -1,57 +1,49 @@
-import { DeployButton } from "@/components/deploy-button";
-import { EnvVarWarning } from "@/components/env-var-warning";
-import { AuthButton } from "@/components/auth-button";
-import { Hero } from "@/components/hero";
-import { ThemeSwitcher } from "@/components/theme-switcher";
-import { ConnectSupabaseSteps } from "@/components/tutorial/connect-supabase-steps";
-import { SignUpUserSteps } from "@/components/tutorial/sign-up-user-steps";
-import { hasEnvVars } from "@/lib/utils";
+'use client';
+
 import Link from "next/link";
-import { Suspense } from "react";
+import { BookOpenIcon, BriefcaseIcon } from "@heroicons/react/24/outline";
 
-export default function Home() {
+export default function AdminHome() {
   return (
-    <main className="min-h-screen flex flex-col items-center">
-      <div className="flex-1 w-full flex flex-col gap-20 items-center">
-        <nav className="w-full flex justify-center border-b border-b-foreground/10 h-16">
-          <div className="w-full max-w-5xl flex justify-between items-center p-3 px-5 text-sm">
-            <div className="flex gap-5 items-center font-semibold">
-              <Link href={"/"}>Next.js Supabase Starter</Link>
-              <div className="flex items-center gap-2">
-                <DeployButton />
-              </div>
-            </div>
-            {!hasEnvVars ? (
-              <EnvVarWarning />
-            ) : (
-              <Suspense>
-                <AuthButton />
-              </Suspense>
-            )}
-          </div>
-        </nav>
-        <div className="flex-1 flex flex-col gap-20 max-w-5xl p-5">
-          <Hero />
-          <main className="flex-1 flex flex-col gap-6 px-4">
-            <h2 className="font-medium text-xl mb-4">Next steps</h2>
-            {hasEnvVars ? <SignUpUserSteps /> : <ConnectSupabaseSteps />}
-          </main>
-        </div>
+    <main className="max-w-6xl mx-auto p-6">
+      {/* Header */}
+      <div className="mb-8">
+        <h1 className="text-4xl font-bold text-gray-900">Admin Dashboard</h1>
+        <p className="mt-2 text-gray-600">
+          Manage your blogs and projects from here.
+        </p>
+      </div>
 
-        <footer className="w-full flex items-center justify-center border-t mx-auto text-center text-xs gap-8 py-16">
-          <p>
-            Powered by{" "}
-            <a
-              href="https://supabase.com/?utm_source=create-next-app&utm_medium=template&utm_term=nextjs"
-              target="_blank"
-              className="font-bold hover:underline"
-              rel="noreferrer"
-            >
-              Supabase
-            </a>
-          </p>
-          <ThemeSwitcher />
-        </footer>
+      {/* Cards / Navigation */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        {/* Blogs Card */}
+        <Link
+          href="/admin/blogs"
+          className="flex items-center p-6 bg-white border rounded-lg shadow hover:shadow-lg transition cursor-pointer"
+        >
+          <BookOpenIcon className="h-12 w-12 text-blue-500 mr-4" />
+          <div>
+            <h2 className="text-xl font-bold">Blogs</h2>
+            <p className="text-gray-500 mt-1">Create, edit, and manage all your blogs.</p>
+          </div>
+        </Link>
+
+        {/* Projects Card */}
+        <Link
+          href="/admin/projects"
+          className="flex items-center p-6 bg-white border rounded-lg shadow hover:shadow-lg transition cursor-pointer"
+        >
+          <BriefcaseIcon className="h-12 w-12 text-green-500 mr-4" />
+          <div>
+            <h2 className="text-xl font-bold">Projects</h2>
+            <p className="text-gray-500 mt-1">Create, edit, and manage all your projects.</p>
+          </div>
+        </Link>
+      </div>
+
+      {/* Optional Footer / Info */}
+      <div className="mt-12 text-gray-400 text-sm">
+        <p>Click on a section to start managing your content. All changes are saved automatically.</p>
       </div>
     </main>
   );

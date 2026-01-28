@@ -21,4 +21,4 @@ const {
 
 if (user) {
   redirect("/admin");
-}
+} 
