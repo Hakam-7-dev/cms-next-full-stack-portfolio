@@ -5,7 +5,6 @@ import { usePathname } from "next/navigation";
 import {
   DashboardIcon,
   FileTextIcon,
-  VideoIcon,
   HomeIcon,
 } from "@radix-ui/react-icons";
 import clsx from "clsx";

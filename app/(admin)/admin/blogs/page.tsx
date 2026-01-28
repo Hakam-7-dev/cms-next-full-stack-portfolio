@@ -134,10 +134,10 @@ export default function BlogsPage() {
      Search (debounced)
   ======================= */
 
-  const debouncedFetch = useCallback(
-    debounce((term: string) => fetchBlogs(term), 600),
-    [],
-  );
+const debouncedFetch = useCallback(
+  debounce((term: string) => fetchBlogs(term), 600),
+  [fetchBlogs],
+);
 
   const handleSearchChange = (
     e: React.ChangeEvent<HTMLInputElement>,

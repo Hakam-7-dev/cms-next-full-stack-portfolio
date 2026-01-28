@@ -1,18 +1,10 @@
 'use client';
 
-import { useState, useReducer, useMemo, useCallback, useEffect } from "react";
-import { createEditor, Descendant, BaseEditor } from "slate";
-import { Slate, Editable, withReact, ReactEditor, RenderElementProps } from "slate-react";
-import { withHistory, HistoryEditor } from "slate-history";
+import { useState, useReducer, useCallback, useEffect } from "react";
+import { Descendant} from "slate";
 import { useRouter, useParams } from "next/navigation";
 
 // --- Types ---
-type CustomText = { text: string };
-type ParagraphElement = { type: "paragraph"; children: CustomText[] };
-type HeadingElement = { type: "heading"; children: CustomText[] };
-type ImageElement = { type: "image"; url: string; children: CustomText[] };
-type CustomElement = ParagraphElement | HeadingElement | ImageElement;
-type CustomEditor = BaseEditor & ReactEditor & HistoryEditor;
 
 interface ProjectInputState {
   title: string;
@@ -27,9 +19,9 @@ interface Project {
 }
 
 // --- Default Slate content ---
-const defaultContent: Descendant[] = [{ type: "paragraph", children: [{ text: "" }] }];
+const defaultContent = [{ type: "paragraph", children: [{ text: "" }] }];
 
-export default function BlogForm({ varaiant }: { varaiant: "blogs" }) {
+export default function BlogForm() {
   const router = useRouter();
   const params = useParams<{ slug: string }>();
   const projectId = params?.slug?.toString();
@@ -44,7 +36,6 @@ export default function BlogForm({ varaiant }: { varaiant: "blogs" }) {
 
   const [value, setValue] = useState<Descendant[]>(defaultContent);
 
-  const editor = useMemo(() => withHistory(withReact(createEditor() as CustomEditor)), []);
 
   // --- Fetch blog/project data ---
   useEffect(() => {
@@ -83,26 +74,26 @@ export default function BlogForm({ varaiant }: { varaiant: "blogs" }) {
   }, [projectId]);
 
   // --- Slate render element ---
-  const renderElement = useCallback((props: RenderElementProps) => {
-    const { element, attributes, children } = props;
-    const el = element as CustomElement;
+  // const renderElement = useCallback((props: RenderElementProps) => {
+  //   const { element, attributes, children } = props;
+  //   const el = element as CustomElement;
 
-    switch (el.type) {
-      case "heading":
-        return <h2 {...attributes} className="text-2xl font-bold my-2">{children}</h2>;
-      case "image":
-        return (
-          <img
-            {...attributes}
-            src={el.url}
-            alt=""
-            className="my-4 max-w-full rounded"
-          />
-        );
-      default:
-        return <p {...attributes} className="my-2">{children}</p>;
-    }
-  }, []);
+  //   switch (el.type) {
+  //     case "heading":
+  //       return <h2 {...attributes} className="text-2xl font-bold my-2">{children}</h2>;
+  //     case "image":
+  //       return (
+  //         <img
+  //           {...attributes}
+  //           src={el.url}
+  //           alt=""
+  //           className="my-4 max-w-full rounded"
+  //         />
+  //       );
+  //     default:
+  //       return <p {...attributes} className="my-2">{children}</p>;
+  //   }
+  // }, []);
 
   // --- Handle project/blog update ---
   const handleUpdate = useCallback(
@@ -112,7 +103,7 @@ export default function BlogForm({ varaiant }: { varaiant: "blogs" }) {
       if (!projectInput.title.trim()) return alert("Project title is required");
 
       const contentText = value
-        .map(node => ("children" in node ? node.children.map(c => c.text).join("") : ""))
+        .map(node => ("children" in node ? node.children.map(c => c).join("") : ""))
         .join("")
         .trim();
 

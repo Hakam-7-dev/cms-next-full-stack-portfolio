@@ -1,9 +1,7 @@
 'use client';
 
-import { useState, useReducer, useMemo, useCallback } from "react";
-import { createEditor, Descendant, BaseEditor } from "slate";
-import { Slate, Editable, withReact, ReactEditor, RenderElementProps } from "slate-react";
-import { withHistory, HistoryEditor } from "slate-history";
+import { useState, useReducer, useCallback } from "react";
+import { Descendant} from "slate";
 import { supabase } from "@/lib/supabase/user"; 
 import { Textarea } from "@/components/ui/textarea";
 
@@ -12,7 +10,6 @@ type CustomText = { text: string };
 type ParagraphElement = { type: "paragraph"; children: CustomText[] };
 type HeadingElement = { type: "heading"; children: CustomText[] };
 type CustomElement = ParagraphElement | HeadingElement;
-type CustomEditor = BaseEditor & ReactEditor & HistoryEditor;
 type CustomDescendant = CustomText | CustomElement;
 
 interface ContentFormProps {
@@ -35,7 +32,6 @@ export default function ContentForm({ variant }: ContentFormProps) {
   const [value, setValue] = useState<Descendant[]>(defaultContent);
   const [loading, setLoading] = useState(false);
 
-  const editor = useMemo(() => withHistory(withReact(createEditor() as CustomEditor)), []);
 
   // --- Submit form ---
   const handleSubmit = useCallback(async (e: React.FormEvent) => {
@@ -63,15 +59,7 @@ export default function ContentForm({ variant }: ContentFormProps) {
   }, [blogInput, value, variant]);
 
   // --- Slate element renderer ---
-  const renderElement = useCallback((props: RenderElementProps) => {
-    const { element, attributes, children } = props;
-    const el = element as CustomElement;
-    switch(el.type){
-      case "heading": return <h2 {...attributes} className="text-2xl font-bold my-2">{children}</h2>;
-      case "paragraph":
-      default: return <p {...attributes} className="my-2">{children}</p>;
-    }
-  }, []);
+
 
   return (
     <div className="max-w-6xl mx-auto py-1 px-7">
