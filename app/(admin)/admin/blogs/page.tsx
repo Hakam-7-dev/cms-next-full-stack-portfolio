@@ -106,10 +106,10 @@ export default function BlogsPage() {
   });
 
   /* =======================
-     Fetch blogs
+     Fetch blogs (stable with useCallback)
   ======================= */
 
-  const fetchBlogs = async (term: string = ""): Promise<void> => {
+  const fetchBlogs = useCallback(async (term: string = "") => {
     dispatch({ type: "FETCH_START" });
 
     try {
@@ -124,24 +124,28 @@ export default function BlogsPage() {
     } catch {
       dispatch({ type: "FETCH_ERROR" });
     }
-  };
+  }, []);
 
   useEffect(() => {
     fetchBlogs();
-  }, []);
+  }, [fetchBlogs]);
 
   /* =======================
-     Search (debounced)
+     Debounced search
   ======================= */
 
-const debouncedFetch = useCallback(
-  debounce((term: string) => fetchBlogs(term), 600),
-  [fetchBlogs],
-);
+  const debouncedFetch = useMemo(
+    () => debounce((term: string) => fetchBlogs(term), 600),
+    [fetchBlogs]
+  );
 
-  const handleSearchChange = (
-    e: React.ChangeEvent<HTMLInputElement>,
-  ): void => {
+  useEffect(() => {
+    return () => {
+      debouncedFetch.cancel();
+    };
+  }, [debouncedFetch]);
+
+  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const term = e.target.value;
     dispatch({ type: "SET_SEARCH_TERM", payload: term });
     debouncedFetch(term);
