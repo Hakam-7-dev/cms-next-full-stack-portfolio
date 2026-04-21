@@ -4,7 +4,7 @@ import { ReactNode } from "react";
 import Link from "next/link";
 import { createClient } from "@/lib/supabase/server";
 import MainLayout from "@/components/mainLayout";
-import LogoutButton  from "@/components/auth-button";
+import LogoutButton  from "@/components/logout-button";
 
 import { PlusCircleIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";

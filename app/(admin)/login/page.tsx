@@ -1,4 +1,3 @@
-import { LoginForm } from "@/components/login-form";
 import { createClient } from "@supabase/supabase-js";
 import { redirect } from "next/navigation";
 const supabaseUrl = "https://mfucmzhbcrvmgrexazdw.supabase.co"; // Replace with your Supabase URL
@@ -9,7 +8,6 @@ export default function Page() {
   return (
     <div className="flex min-h-svh w-full items-center justify-center p-6 md:p-10 bg-gray-300">
       <div className="w-full max-w-md">
-        <LoginForm />
       </div>
     </div>
   );
