@@ -1,5 +1,5 @@
-import type { Metadata } from "next";
-import { Geist } from "next/font/google";
+import { Geist} from "next/font/google";
+import { Metadata } from "next";
 
 const defaultUrl = process.env.VERCEL_URL
   ? `https://${process.env.VERCEL_URL}`
